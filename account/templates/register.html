@@ -1,0 +1,92 @@
+<h1>Tenant Name: {{tenant_name}}</h1>
+    <div class="body_1">
+        <form method="post">
+            {% csrf_token %}
+            <div class="container">
+                <br>
+                <h1 class="text-center"  style="color: white; font-family: Arial, sans-serif">BRS Registration</h1>
+                <hr>
+
+                <div class="row justify-content-center">
+                    <div class="col-md-5">
+                        <div class="card">
+                            <header class="card-header">
+                                <a href="{% url 'account:login' tenant_name%}" class="float-right btn btn-outline-primary mt-1" style="color: white; border-color: white" >Sign-in</a>
+                                <h3 class="card-title mt-2">Create account</h3>
+                            </header>
+                            <article class="card-body">
+                                <div class="form-group">
+
+                                    <label>Create {{ registration_form.username.label }}</label><br>
+
+                                    {{ registration_form.username }}
+
+                                </div> <!-- form-group end.// -->
+
+
+                                <div class="form-group">
+                                    <label>Create {{ registration_form.email.label }}</label><br>
+                                    {#                                        <input type="email" class="form-control" placeholder="">#}
+                                    {{ registration_form.email }}
+                                    <small class="form-text">We'll never share your email with anyone else.</small>
+                                </div> <!-- form-group end.// -->
+                                <div class="form-group">
+                                    <label>Create {{ registration_form.first_name.label }}</label><br>
+                                    {{ registration_form.first_name }}
+                                </div>
+                                <div class="form-group">
+                                    <label>Create {{ registration_form.last_name.label }}</label><br>
+                                    {{ registration_form.last_name }}
+                                </div>
+                                <div class="form-group">
+                                    <label>Create {{ registration_form.tenant.label }}</label><br>
+                                    {{ registration_form.tenant}}
+                                </div>
+                                <div class="form-group">
+                                    <label>Create {{ registration_form.password1.label }}</label><br>
+                                    {{ registration_form.password1 }}
+                                </div> <!-- form-group end.// -->
+                                <div class="form-group">
+                                    <label>{{ registration_form.password2.label }}</label><br>
+                                    {{ registration_form.password2 }}
+                                </div> <!-- form-group end.// -->
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary btn-block"> Register</button>
+                                </div> <!-- form-group// -->
+                                <small>By clicking the 'Sign Up' button, you confirm that you accept our <br> Terms
+                                    of use
+                                    and Privacy Policy.</small>
+
+                            </article> <!-- card-body end .// -->
+                            <div class="border-top card-body text-center">Have an account? <a href="{% url 'account:login' tenant_name%}">Log
+                                In</a>
+                            </div>
+                        </div> <!-- card.// -->
+                    </div> <!-- col.//-->
+                </div> <!-- row.//-->
+            </div>
+            <!--container end.//-->
+
+        </form>
+    </div>
+    <style>
+        .body_1 {
+
+            background-size: cover;
+            background-repeat: no-repeat;
+            height: 100%;
+            font-family: "Numans", sans-serif;
+        }
+
+        .container {
+            height: 740px;
+            margin-top: 90px;
+            align-content: center;
+        }
+
+        .card {
+            background-color: rgba(0, 0, 0, 0.5) !important;
+            color: white;
+        }
+
+    </style>

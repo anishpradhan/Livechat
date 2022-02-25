@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tenant {{tenant.schema_name}}</title>
+</head>
+<body style="margin: 30px;">
+<!--<h3>Number of logins: {{num_login}}</h3>-->
+<h3>Tenant: {{tenant.schema_name}}</h3>
+<a style="float: right" href="{% url 'account:logout' %}">Logout</a>
+<div class="users">
+  <ul>
+    {% for i in users %}
+      <li>{{i.email}}</li>
+    {% endfor %}
+  </ul>
+</div>
+<hr>
+{% if registration_form %}
+<div class="register">
+    <p><h1>Since you are a Superuser of "{{tenant.schema_name}}" tenant, you can register new users to your tenant.</h1></p>
+    <div class="form_body">
+        <form method="post">
+            {% csrf_token %}
+                <div class="row justify-content-center">
+                    <div class="col-md-5">
+                        <div class="card">
+                            <header class="card-header">
+                                <h3 class="card-title mt-2">Create account</h3>
+                            </header>
+                            <article class="card-body">
+                                <div class="form-group">
+
+                                    <label>Create {{ registration_form.username.label }}</label><br>
+
+                                    {{ registration_form.username }}
+
+                                </div> <!-- form-group end.// -->
+
+
+                                <div class="form-group">
+                                    <label>Create {{ registration_form.email.label }}</label><br>
+                                    {#                                        <input type="email" class="form-control" placeholder="">#}
+                                    {{ registration_form.email }}
+                                    <small class="form-text">We'll never share your email with anyone else.</small>
+                                </div> <!-- form-group end.// -->
+                                <div class="form-group">
+                                    <label>Create {{ registration_form.first_name.label }}</label><br>
+                                    {{ registration_form.first_name }}
+                                </div>
+                                <div class="form-group">
+                                    <label>Create {{ registration_form.last_name.label }}</label><br>
+                                    {{ registration_form.last_name }}
+                                </div>
+                                <div class="form-group" style="display: none">
+                                    <label>Create {{ registration_form.tenant.label }}</label><br>
+                                    {{ registration_form.tenant }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Create {{ registration_form.password1.label }}</label><br>
+                                    {{ registration_form.password1 }}
+                                </div> <!-- form-group end.// -->
+                                <div class="form-group">
+                                    <label>{{ registration_form.password2.label }}</label><br>
+                                    {{ registration_form.password2 }}
+                                </div> <!-- form-group end.// -->
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary btn-block"> Register</button>
+                                </div> <!-- form-group// -->
+                                <small>By clicking the 'Sign Up' button, you confirm that you accept our <br> Terms
+                                    of use
+                                    and Privacy Policy.</small>
+
+                            </article> <!-- card-body end .// -->
+                            <div class="border-top card-body text-center">Have an account? <a href="{% url 'account:login'}">Log
+                                In</a>
+                            </div>
+                        </div> <!-- card.// -->
+                    </div> <!-- col.//-->
+                </div> <!-- row.//-->
+
+            <!--container end.//-->
+
+        </form>
+    </div>
+</div>
+{% endif %}
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VolgAI Chat</title>
+</head>
+<body>
+<div class="create">
+    <p><h1>Want to create a new tenant? <a href="{% url 'tenants:create_tenant' %}">Register here </a></h1></p>
+    <p><h1>Already have a user account?<a href="{% url 'account:login' %}">Log In </a></h1></p>
+</div>
+  <div class="tenants">
+    <ul>
+      {% for tenant in tenants %}
+      <li><a href="{% url 'account:login'%}">{{tenant.schema_name}}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+</body>
+</html>

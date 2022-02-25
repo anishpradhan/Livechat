@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Index Page</title>
+</head>
+<body>
+<div class="room_list">
+    <h1>Logged In: {{user.username}}</h1>
+    <h2>Support Group: {{support_group.name}}</h2>
+    <a style="float:right;" href="{% url 'account:logout' %}">Logout</a>
+    <h1>Pending Chats:</h1>
+    <br>
+    <div class="list">
+        <ul>
+            {% for rooms in pending_rooms %}
+            <li><a href="{% url 'chatting:admin_join_chat' rooms.id%}">{{rooms.name}}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <h1>All Chats:</h1>
+    <br>
+    <div class="all_list">
+        <ul>
+            {% for room in all_chats %}
+
+            <li>{% if not room.ended %}<a href="{% url 'chatting:chat_page' room.id%}">{{room.name}}</a>{% else %}{{room.name}}{% endif %} <span>({% if not room.ended %}Active{% else %}Ended{% endif %})</span></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+<hr>
+{% if registration_form %}
+<div class="register">
+    <p><h1>Since you are a Superuser of "{{tenant_name}}" tenant, you can register new users to your tenant.</h1></p>
+    <div class="form_body">
+        <form method="post">
+            {% csrf_token %}
+            <div class="row justify-content-center">
+                <div class="col-md-5">
+                    <div class="card">
+                        <header class="card-header">
+                            <h3 class="card-title mt-2">Create account</h3>
+                        </header>
+                        <article class="card-body">
+                            <div class="form-group">
+
+                                <label>Create {{ registration_form.username.label }}</label><br>
+
+                                {{ registration_form.username }}
+
+                            </div> <!-- form-group end.// -->
+
+
+                            <div class="form-group">
+                                <label>Create {{ registration_form.email.label }}</label><br>
+                                {#                                        <input type="email" class="form-control" placeholder="">#}
+                                {{ registration_form.email }}
+                                <small class="form-text">We'll never share your email with anyone else.</small>
+                            </div> <!-- form-group end.// -->
+                            <div class="form-group">
+                                <label>Create {{ registration_form.first_name.label }}</label><br>
+                                {{ registration_form.first_name }}
+                            </div>
+                            <div class="form-group">
+                                <label>Create {{ registration_form.last_name.label }}</label><br>
+                                {{ registration_form.last_name }}
+                            </div>
+                            <div class="form-group" style="display: none">
+                                <label>Create {{ registration_form.tenant.label }}</label><br>
+                                {{ registration_form.tenant }}
+                            </div>
+
+                            <div class="form-group">
+                                <label>Create {{ registration_form.password1.label }}</label><br>
+                                {{ registration_form.password1 }}
+                            </div> <!-- form-group end.// -->
+                            <div class="form-group">
+                                <label>{{ registration_form.password2.label }}</label><br>
+                                {{ registration_form.password2 }}
+                            </div> <!-- form-group end.// -->
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary btn-block"> Register</button>
+                            </div> <!-- form-group// -->
+                            <small>By clicking the 'Sign Up' button, you confirm that you accept our <br> Terms
+                                of use
+                                and Privacy Policy.</small>
+
+                        </article> <!-- card-body end .// -->
+                        <div class="border-top card-body text-center">Have an account? <a href="{% url 'account:login'}">Log
+                            In</a>
+                        </div>
+                    </div> <!-- card.// -->
+                </div> <!-- col.//-->
+            </div> <!-- row.//-->
+
+            <!--container end.//-->
+
+        </form>
+    </div>
+</div>
+{% endif %}
+<!-- Start of LiveChat (www.livechatinc.com) code -->
+<script>
+    window.__lc = window.__lc || {};
+    window.__lc.license = 13536741;
+    ;(function(n,t,c){function i(n){return e._h?e._h.apply(null,n):e._q.push(n)}var e={_q:[],_h:null,_v:"2.0",on:function(){i(["on",c.call(arguments)])},once:function(){i(["once",c.call(arguments)])},off:function(){i(["off",c.call(arguments)])},get:function(){if(!e._h)throw new Error("[LiveChatWidget] You can't use getters before load.");return i(["get",c.call(arguments)])},call:function(){i(["call",c.call(arguments)])},init:function(){var n=t.createElement("script");n.async=!0,n.type="text/javascript",n.src="https://cdn.livechatinc.com/tracking.js",t.head.appendChild(n)}};!n.__lc.asyncInit&&e.init(),n.LiveChatWidget=n.LiveChatWidget||e}(window,document,[].slice))
+</script>
+<noscript><a href="https://www.livechatinc.com/chat-with/13536741/" rel="nofollow">Chat with us</a>, powered by <a href="https://www.livechatinc.com/?welcome" rel="noopener nofollow" target="_blank">LiveChat</a></noscript>
+<!-- End of LiveChat code -->
+
+
+</body>
+</html>
