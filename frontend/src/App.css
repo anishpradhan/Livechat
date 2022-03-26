@@ -1,0 +1,15 @@
+.App {
+  text-align: center;
+}
+
+
+
+.chatList-active {
+  background-color: #E1E9EC;
+}
+
+.chatList-active > .chatList-line {
+  width: 4px;
+  height: 100%;
+  background-color: #4384F5; 
+}
