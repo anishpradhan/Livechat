@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from .forms import RoomForm
-from .models import Room, Message, SupportGroup, UploadedFile
+from .models import Room, Message, UploadedFile
 from django.http import HttpResponseRedirect, JsonResponse
 from django.db.models import Q
 from rest_framework import permissions
@@ -10,6 +10,7 @@ from django.urls import reverse
 from django.contrib.auth import get_user_model
 from .serializers import RoomSerializer, MessageSerializer
 from account.forms import RegistrationForm
+import requests
 
 # Create your views here.
 User = get_user_model()
@@ -28,39 +29,6 @@ def index(request):
         'room_form': room_form
     }
     return render(request, 'index.html', context=context)
-
-
-class CreateRoom(APIView):
-    permission_classes = (permissions.AllowAny,)
-
-    def post(self, request, format=None):
-        """
-        Create room through ajax request from the frontend
-        """
-        room_name = request.GET.get('room_name', None)
-        support_group = request.GET.get('support', None)
-        question = request.GET.get('question', None)
-        support = SupportGroup.objects.get(name=support_group)
-        room = Room(name=room_name, support_group=support, details=question)
-        room.save()
-        response = {
-            'room_name': room.name,
-            'room_id': str(room.id),
-        }
-        return Response(response)
-
-
-def get_support_groups(request):
-    """
-        This function returns all the support groups in the particular tenant.
-    """
-    support_group = SupportGroup.objects.all()
-    names = [i.name for i in support_group]
-    response = {
-        'support_groups': names
-    }
-    return JsonResponse(response)
-
 
 def join_chat(request, room_id):
     """
@@ -112,7 +80,6 @@ def chat_page(request, room_id):
 from django.forms.models import model_to_dict
 import json
 
-
 class Chatlist(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
@@ -120,52 +87,13 @@ class Chatlist(APIView):
         user = request.user
         all_chats = Room.objects.filter(agents=user).order_by('-last_sent_time')
         pending_rooms = Room.objects.filter(ended=None, agents=None).exclude(agents=user).order_by('-started')
-        # groups = SupportGroup.objects.filter(
-        #     Q(supervisors=user) | Q(agents=user)
-        # )
-        # if groups:
-        #     pending_rooms = pending_rooms.filter(support_group__in=groups)
-
-        # pending_rooms = json.dumps(model_to_dict(pending_rooms))
-        # all_chats = model_to_dict(all_chats)
-        # support_group = model_to_dict(SupportGroup.objects.get(agents=user))
-        # schema_name = model_to_dict(request.tenant.schema_name)
-        # response = {
-        #     'pending_rooms': pending_rooms,
-        #     'all_chats': all_chats,
-        #     'support_group': support_group,
-        #     'tenant_name': schema_name
-
-        # }
         all_room_serializers = RoomSerializer(all_chats, many=True)
         pending_serializers = RoomSerializer(pending_rooms, many=True)
-
-        # pending_rooms = json.dumps(serializers.data)
         return Response({
             'all_rooms': all_room_serializers.data,
             'pending_rooms': pending_serializers.data
         })
 
-
-class LatestChatRoom(APIView):
-    permission_classes = (permissions.IsAuthenticated,)
-
-    def get(self, request, format=None):
-        user = request.user
-        pending_rooms = Room.objects.filter(ended=None, agents=None).exclude(agents=user).order_by('-started')
-
-        groups = SupportGroup.objects.filter(
-            Q(supervisors=user) | Q(agents=user)
-        )
-        if groups:
-            pending_rooms = pending_rooms.filter(support_group__in=groups)
-
-        pending_room = pending_rooms[:1]
-        serializers = RoomSerializer(pending_room, many=True)
-
-        return Response({
-            'roomID': serializers.data[0]['id']
-        })
 
 
 def admin_index(request):
@@ -177,16 +105,9 @@ def admin_index(request):
     all_chats = Room.objects.filter(agents=user)
     pending_rooms = Room.objects.filter(ended=None, agents=None).exclude(agents=user).order_by('-started')
 
-    groups = SupportGroup.objects.filter(
-        Q(supervisors=user) | Q(agents=user)
-    )
-    if groups:
-        pending_rooms = pending_rooms.filter(support_group__in=groups)
-
     context = {
         'pending_rooms': pending_rooms,
         'all_chats': all_chats,
-        'support_group': SupportGroup.objects.get(agents=user),
         'tenant_name': request.tenant.schema_name
 
     }
@@ -228,15 +149,21 @@ class GetLastMessages(APIView):
         chatId = request.GET.get('chat_id')
         room = get_object_or_404(Room, id=chatId)
         room_agent_exists = False
-        if room.agents.all():
+        room_agent_id = None
+        if room.agents:
             room_agent_exists = True
+            room_agent_id = room.agents.id
         messages = Message.objects.filter(room=room)
         last_10_messages = messages.order_by('-sent').all()[:50]
         serializers = MessageSerializer(last_10_messages, many=True)
+        total_unread_messages = room.unread_messages()
         return Response({
             'room_name': room.name,
+            'room_id': room.id,
             'last_10_messages': serializers.data,
-            'room_agent_exists': room_agent_exists
+            'room_agent_exists': room_agent_exists,
+            'room_agent': room_agent_id,
+            'total_unread_messages': total_unread_messages
         })
 
 
@@ -246,26 +173,17 @@ class JoinChat(APIView):
     def post(self, request, format=None):
         chatId = request.data.get('room_id')
         room = get_object_or_404(Room, id=chatId)
-        room.agents.add(request.user)
-        message = Message.objects.create(
-            room=room,
-            message=f'{request.user.first_name} has joined the chat',
-            type='info')
-        message.save()
-        # channel_layer = get_channel_layer()
-        # message = {
-        #     'command': 'chat_joined',
-        #     'message': {
-        #
-        #     }
-        # }
-        # async_to_sync(channel_layer.group_send)(
-        #     'user', {
-        #         'type': 'chat_message',
-        #         'message': message
-        #     }
-        # )
+        room.agents = request.user
+        # message = Message.objects.create(
+        #     room=room,
+        #     message=f'{request.user.first_name} has joined the chat',
+        #     type='info')
+        room.save(updateChatList=False)
+        # message.save()
         return Response({
+            'chatId': room.id,
+            'agentName': room.agents.username,
+            'agent': room.agents.id,
             'success': 'Agent added',
         })
 
@@ -276,7 +194,6 @@ def get_user_contact(username):
     except User.DoesNotExist:
         user = None
     return user
-
 
 def get_current_chat(chatId):
     return get_object_or_404(Room, id=chatId)

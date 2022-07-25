@@ -10,17 +10,17 @@ from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 
 
-class SupportGroup(models.Model):
-    name = models.CharField(_("name"), max_length=225)
-    agents = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='agent_support_groups')
-    supervisors = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='supervisor_support_groups')
-
-    def __str__(self):
-        return f'{self.name}'
-
-    class Meta:
-        verbose_name = _('Support group')
-        verbose_name_plural = _('Support groups')
+# class SupportGroup(models.Model):
+#     name = models.CharField(_("name"), max_length=225)
+#     agents = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='agent_support_groups')
+#     supervisors = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='supervisor_support_groups')
+#
+#     def __str__(self):
+#         return f'{self.name}'
+#
+#     class Meta:
+#         verbose_name = _('Support group')
+#         verbose_name_plural = _('Support groups')
 
 
 def user_directory_path(instance, filename):
@@ -54,10 +54,10 @@ class Room(models.Model):
     details = models.TextField(blank=True)
     started = models.DateTimeField(auto_now=True)
     ended = models.DateTimeField(null=True, blank=True)
-    agents = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='chats')
+    agents = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, related_name='chats',
+                               on_delete=models.CASCADE)
     objects = models.Manager()
     active = RoomManager()
-    support_group = models.ForeignKey(SupportGroup, on_delete=models.CASCADE, null=True, blank=True)
     last_sent_time = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -67,64 +67,75 @@ class Room(models.Model):
         self.ended = datetime.now()
         self.save()
 
-    def save(self, *args, **kwargs):
+    def save(self, updateChatList=True, *args, **kwargs):
+        from .serializers import RoomSerializer
         channel_layer = get_channel_layer()
-        message = {
-            'command': 'update_chat_list',
-            'message': 'Successfully updated'
-        }
-        async_to_sync(channel_layer.group_send)(
-            'user', {
-                'type': 'chat_message',
-                'message': message
+        if updateChatList:
+            super(Room, self).save(*args, **kwargs)
+            chatStartMsg = Message.objects.create(room=self, message=f'Chat Started', type='started_info')
+            preChatFormMsg = Message.objects.create(room=self, name=self.name,  message=f'Pre-chat form', type='chat_form')
+            greetingMsg = Message.objects.create(room=self, message=f'Hello, How may I help you?', name='greetingMsg' )
+            chatStartMsg.save()
+            preChatFormMsg.save()
+            greetingMsg.save()
+
+            message = {
+                'command': 'update_chat_list',
+                'message': {
+                    'chatRoom': RoomSerializer(self).data,
+                }
             }
-        )
-        super(Room, self).save(*args, **kwargs)
-        # message = Message.objects.create(room=self, message=f'Chat Started', type='started_info')
-        # message.save()
+            async_to_sync(channel_layer.group_send)(
+                'user', {
+                    'type': 'chat_message',
+                    'message': message
+                }
+            )
+        else:
+            super(Room, self).save(*args, **kwargs)
 
     def get_agents(self):
         return self.agents
 
     def unread_messages(self):
-        total_unread_messages = Message.objects.filter(room = self, agent=None, receiverHasRead = False)
+        total_unread_messages = Message.objects.filter(room=self, agent=None, receiverHasRead=False)
         return total_unread_messages.count()
 
     def message_read_true(self, sender):
         if sender == 'agent':
-            total_unread_messages = Message.objects.filter(room = self, agent__isnull=True, receiverHasRead = False)
+            total_unread_messages = Message.objects.filter(room=self, agent__isnull=True, receiverHasRead=False)
         else:
-            total_unread_messages = Message.objects.filter(room = self, agent__isnull=False, receiverHasRead = False)
+            total_unread_messages = Message.objects.filter(room=self, agent__isnull=False, receiverHasRead=False)
         for i in total_unread_messages:
             i.receiverHasRead = True
         Message.objects.bulk_update(total_unread_messages, ['receiverHasRead'])
-        channel_layer = get_channel_layer()
-        message = {
-            'command': 'update_chat_list',
-            'message': 'Successfully updated'
-        }
-        async_to_sync(channel_layer.group_send)(
-            'user', {
-                'type': 'chat_message',
-                'message': message
-            }
-        )
+        # channel_layer = get_channel_layer()
+        # message = {
+        #     'command': 'update_chat_list',
+        #     'message': 'Successfully updated'
+        # }
+        # async_to_sync(channel_layer.group_send)(
+        #     'user', {
+        #         'type': 'chat_message',
+        #         'message': message
+        #     }
+        # )
 
     def last_message(self):
-        last_msg = Message.objects.filter(room = self).order_by('-sent')[:1]
+        last_msg = Message.objects.filter(room=self).order_by('-sent')[:1]
         if last_msg:
             message = last_msg[0].message
             sent_time = last_msg[0].sent
 
             result = {
-                'message' : message,
-                'sent_time' : sent_time
+                'message': message,
+                'sent_time': str(sent_time)
             }
             return result
         else:
             result = {
-                'message' : 'Compose Message...',
-                'sent_time' : self.started
+                'message': 'Compose Message...',
+                'sent_time': self.started
             }
             return result
 
@@ -144,28 +155,14 @@ class Message(models.Model):
     file = models.ForeignKey(UploadedFile, related_name='message', on_delete=models.DO_NOTHING, verbose_name=_("File"),
                              blank=True, null=True)
 
-
     def __str__(self):
         return f'{self.sent}: "{self.message}" in Room "{self.room}"'
 
     def save(self, *args, **kwargs):
-        channel_layer = get_channel_layer()
-        message = {
-            'command': 'update_chat_list',
-            'message': 'Successfully updated'
-        }
-        async_to_sync(channel_layer.group_send)(
-            'user', {
-                'type': 'chat_message',
-                'message': message
-            }
-        )
-
         super(Message, self).save(*args, **kwargs)
         room = Room.objects.get(id=self.room.id)
         room.last_sent_time = self.sent
-        room.save()
-
+        room.save(updateChatList=False)
 
     def get_name(self):
         if self.agent:

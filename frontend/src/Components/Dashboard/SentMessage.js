@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useEffect } from "react";
+import { FaUser } from "react-icons/fa";
 
 const SentMessage = ({
   message,
@@ -19,24 +19,11 @@ const SentMessage = ({
       }`}
     >
       <span
-        className={`w-8 h-8 shrink-0 rounded-full border-4 bg-gray-200 ${
+        className={`w-8 h-8 shrink-0 rounded-full border-4 bg-gray-200 flex justify-center items-center ${
           samePreviousSender ? "invisible" : "visible self-center"
         }`}
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-5 w-5 text-gray-300"
-          fill="grey"
-          viewBox="0 0 22 22"
-          stroke="grey"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-          />
-        </svg>
+        <FaUser color="grey" />
       </span>
 
       <div className="flex flex-col items-end max-w-xl">
@@ -74,20 +61,7 @@ const SentMessage = ({
           <span className="text-[13px] text-gray-500 flex space-x-1 items-end">
             {messageStatus ? (
               <>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
+                <FaUser color="grey" />
 
                 <span>Read</span>
               </>

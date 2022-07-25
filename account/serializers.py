@@ -37,7 +37,7 @@ class TokenObtainSerializer(TokenObtainPairSerializer):
         return refresh_token
 
     def validate(self, attrs):
-        print(attrs)
+
         data = super().validate(attrs)
         refresh = self.get_token(self.user)
         tenant_id = self.user.tenant_id

@@ -27,13 +27,6 @@ function App() {
   useEffect(() => {
     document.title = "Live Chat";
   });
-
-   // const DefaultContainer = () => (
-  //   <div className="">
-  //     <Navbar />
-  //     <PublicRoute exact path="/" isAuthenticated={isAuthenticated}><Home/></PublicRoute>
-  //   </div>
-  // );
   return (
     <div className="App">
       <Layout>

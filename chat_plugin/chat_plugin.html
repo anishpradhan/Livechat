@@ -25,12 +25,6 @@
                 <label for="name" class="form-label">Name:</label>
                 <input type="text" class="form-control" name="name" id="name" required/>
             </div>
-            <div class="mb-3">
-                <label for="support" class="form-label">Support Group:</label>
-                <select class="form-select" name="support_group" id="support_group" required>
-                    <option selected>---Select Support Group---</option>
-                </select>
-            </div>
 
             <div class="mb-3">
                 <label for="question" class="form-label">Question:</label>
@@ -69,9 +63,7 @@
         >
             Chat: <span id="room_name"></span>
         </div>
-        <div class="d-block h6 p-2">
-            Support Group: <span id="support"></span>
-        </div>
+
         <div class="chat">
 
             <div class="d-flex flex-column justify-content-end border border-3 w-75 overflow-auto mb-3 p-2"
@@ -119,7 +111,6 @@
     console.log(document.cookie);
 
 
-
     $(document).ready(function () {
         /**
          Perform two ajax calls, first to get the tenant_uuid of the schema_name provided, and after receiving the tenant_uuid,
@@ -129,7 +120,7 @@
         $.ajax({
             type: "GET",
             data: {
-                'schema_name': 'anish',
+                'schema_name': 'Anish',
             },
             async: false,
             url: "http://localhost:8000/tenants/register/api/get_tenant_uuid",
@@ -137,27 +128,27 @@
                 console.log(data['tenant_name']);
                 console.log(data['tenant_uuid']);
                 tenant_uuid = data['tenant_uuid'];
-                $.ajax({
-                    type: "GET",
-                    url: "http://localhost:8000/ajax/get_support_groups/",
-                    crossDomain: true,
-                    headers: {
-                        'X-DTS-SCHEMA': tenant_uuid,
-                    },
-                    success: function (data) {
-
-                        for (i = 0; i < data["support_groups"].length; i++) {
-                            $("#support_group").append(
-                                "<option value=" +
-                                data["support_groups"][i] +
-                                ">" +
-                                data["support_groups"][i] +
-                                "</option>"
-                            );
-                            console.log(data["support_groups"][i]);
-                        }
-                    },
-                });
+                // $.ajax({
+                //     type: "GET",
+                //     url: "http://localhost:8000/ajax/get_support_groups/",
+                //     crossDomain: true,
+                //     headers: {
+                //         'X-DTS-SCHEMA': tenant_uuid,
+                //     },
+                //     success: function (data) {
+                //
+                //         for (i = 0; i < data["support_groups"].length; i++) {
+                //             $("#support_group").append(
+                //                 "<option value=" +
+                //                 data["support_groups"][i] +
+                //                 ">" +
+                //                 data["support_groups"][i] +
+                //                 "</option>"
+                //             );
+                //             console.log(data["support_groups"][i]);
+                //         }
+                //     },
+                // });
             },
         });
 
@@ -201,8 +192,8 @@
                     $("#chat_page").show();
                     var room_id = data['chat_id'];
                     var room_name = data['chat_name'];
-                    var support_group = data['support_group'];
-                    websocket(room_id, room_name, support_group); // call websocket function to establish websocket connection
+                    // var support_group = data['support_group'];
+                    websocket(room_id, room_name); // call websocket function to establish websocket connection
                     console.log(data);
                 },
             });
@@ -217,7 +208,6 @@
             //     + '/ws/livechat/chatrooms/' + room_id + '/';
 
             $('#room_name').text(room_name);
-            $('#support').text(support_group);
 
 
             websocket_url = 'ws://localhost:8000/ws/livechat/chatrooms/' + room_id + '/';
@@ -395,18 +385,19 @@
                 }
             })
 
-            function hasRead(roomID, sender){
+            function hasRead(roomID, sender) {
                 chatSocket.send(JSON.stringify({
                     'command': "set_message_read",
                     'chatId': roomID,
                     'sender': sender
                 }))
             }
+
             /**
              * executed when message is sent by user
              */
-            $('#message_log').click(function (){
-               hasRead(room_id, 'not_agent');
+            $('#message_log').click(function () {
+                hasRead(room_id, 'not_agent');
             });
 
             $('#send').click(function () {
@@ -414,7 +405,7 @@
                 // Send message to the websocket
                 if ($.trim($('#message').val()) !== '') {
                     // if (keyTimer) {
-                        clearTimeout(keyTimer);
+                    clearTimeout(keyTimer);
                     // };
                     var message = $("#message").val();
                     chatSocket.send(JSON.stringify({
@@ -426,6 +417,7 @@
                     chatSocket.send(JSON.stringify({
                         'command': 'finished_typing',
                         'by': room_name,
+                        'chatId': room_id
                     }));
 
                     $('#message').val('');
@@ -433,16 +425,18 @@
                 }
 
 
-               /** send is_typing status when the user is typing. Only implemented for admin side. Needs improvement **/
+                /** send is_typing status when the user is typing. Only implemented for admin side. Needs improvement **/
 
                 var textarea = $('#message');
                 var keyTimer;
                 textarea.keyup(function (e) {
                     if (e.which !== 13) {
-                    chatSocket.send(JSON.stringify({
-                        'command': 'is_typing',
-                        'by': room_name,
-                    }))}
+                        chatSocket.send(JSON.stringify({
+                            'command': 'is_typing',
+                            'by': room_name,
+                            'chatId': room_id
+                        }))
+                    }
 
                     if (keyTimer) {
                         clearTimeout(keyTimer);
@@ -451,7 +445,9 @@
                         chatSocket.send(JSON.stringify({
                             'command': 'finished_typing',
                             'by': room_name,
+                            'chatId': room_id
                         }));
+                        console.log("FINISHED TYPING");
                     }, 1500);
                 });
 
@@ -483,7 +479,7 @@
                     })
 
 
-                } 
+                }
             })
 
             /**

@@ -23,9 +23,9 @@ till here.
 
 django.setup()
 
-
 from django.core.asgi import get_asgi_application
 from channels.auth import AuthMiddlewareStack
+from chatting.tokenauthmiddleware import TokenAuthMiddleware
 from channels.routing import ProtocolTypeRouter, URLRouter
 import chatting.routing as routing
 
@@ -34,6 +34,7 @@ application = ProtocolTypeRouter({
     "websocket": AuthMiddlewareStack(
         URLRouter(
             routing.websocket_urlpatterns
-        )
+        ),
+
     )
 })

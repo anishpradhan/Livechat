@@ -1,9 +1,10 @@
 import React from "react";
 import {Navigate, Outlet } from "react-router-dom";
+import Loading from "./Loading";
 
 const PrivateRoute = ({ isAuthenticated, isLoading }) => {
   if (isLoading) {
-    return <h1>Loading...</h1>;
+    return <Loading />;
   } else if (isAuthenticated) {
     return <Outlet />;
   } else {

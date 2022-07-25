@@ -62,7 +62,6 @@ class CustomTenantMiddleware(MiddlewareMixin):
         # the tenant metadata is stored.
         connection.set_schema_to_public()
         hostname = self.hostname_from_request(request)
-        print(request.user)
         tenant_uuid = self.tenant_id_from_request(request)
         domain_model = get_tenant_domain_model()
         try:

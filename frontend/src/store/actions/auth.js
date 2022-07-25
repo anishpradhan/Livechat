@@ -10,7 +10,6 @@ import {
   USER_LOAD_FAIL,
   AUTHENTICATED_SUCCESS,
   AUTHENTICATED_FAIL,
-
 } from "./types";
 
 export const checkAuthenticated = () => async(dispatch) => {
@@ -49,6 +48,8 @@ export const checkAuthenticated = () => async(dispatch) => {
       type: AUTHENTICATED_FAIL,
     });
 }};
+
+
 
 export const load_user = () => async(dispatch) => {
   dispatch({

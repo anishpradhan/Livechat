@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from tenants import models as tenant_model
@@ -33,6 +35,7 @@ class MyAccountManager(BaseUserManager):
 
 # User Model
 class Account(AbstractBaseUser):
+    user_id = models.UUIDField(unique=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(verbose_name="email", max_length=60, unique=True)
     username = models.CharField(max_length=30, unique=True)
     first_name = models.CharField(max_length=255)

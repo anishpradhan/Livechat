@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 const DashboardPanel = ({ logout }) => {
 
   return (
-    <div className="w-screen h-16 sm:w-16 sm:h-screen bg-[#131317] flex flex-row sm:flex-col justify-between shrink-0">
+    <div className="w-screen h-16 sm:w-16 sm:h-screen fixed  bg-[#131317] flex flex-row sm:flex-col justify-between shrink-0">
       <ul className="flex flex-row sm:flex-col justify-evenly w-full text-white text-xs font-sans font-semibold items-stretch">
         <NavLink end to="/dashboard" activeClassName="bg-[#2B2B2E]">
           <li className="group hover:bg-[#2B2B2E] hover:text-white hover:cursor-pointer py-6 leading-4 hidden sm:flex flex-col items-center space-y-2">
@@ -39,7 +39,7 @@ const DashboardPanel = ({ logout }) => {
           <span className="text-gray-400 group-hover:text-white">Chats</span>
         </li>
         </NavLink>
-
+        
         <li className="group hover:bg-[#2B2B2E] hover:cursor-pointer py-2 px-4 sm:py-6 sm:px-0 leading-4 flex flex-col items-center space-y-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -55,6 +55,7 @@ const DashboardPanel = ({ logout }) => {
           </svg>
           <span className="text-gray-400 group-hover:text-white">Traffic</span>
         </li>
+       
         <li className="group hover:bg-[#2B2B2E] hover:cursor-pointer py-2 px-4 sm:py-6 sm:px-0 leading-4 flex flex-col items-center space-y-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"

@@ -16,16 +16,10 @@ class CreateRoomAPI(APIView):
 
     def post(self, request):
         name = request.POST.get('name')
-        support = request.POST.get('support_group')
         details = request.POST.get('question')
-        print(support)
-        support_group = SupportGroup.objects.get(name=support)
-        support_id = support_group.id
         data = {
             'name': name,
-            'support_group': support_id,
             'details': details,
-            # 'last_message_field': details
         }
         serializer = RoomSerializer(data=data)
 
@@ -34,7 +28,6 @@ class CreateRoomAPI(APIView):
             response = {
                 'chat_id': str(response.id),
                 'chat_name': response.name,
-                'support_group': response.support_group.name,
             }
             response = json.dumps(response)
 

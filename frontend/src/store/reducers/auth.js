@@ -12,6 +12,7 @@ import {
   USER_LOAD_FAIL,
   RETRIEVE_CHATLIST_SUCCESS,
   RETRIEVE_CHATLIST_FAIL,
+  SOCKET_CONNECTED
   
 } from "../actions/types";
 
@@ -21,6 +22,7 @@ const initialState = {
   isLoading: true,
   isAuthenticated: false,
   user: {},
+  socket: false,
   tenant_uuid: localStorage.getItem("tenant_uuid"),
   error: false,
   errorMessage: '',
@@ -41,6 +43,11 @@ export default function (state = initialState, action) {
         ...state,
         isAuthenticated: false,
       };
+    case SOCKET_CONNECTED:
+      return {
+        ...state,
+        socket: true,
+      }  
     case LOGIN_SUCCESS:
       localStorage.setItem("access", payload.access);
       localStorage.setItem("refresh", payload.refresh);

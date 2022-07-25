@@ -3,9 +3,9 @@ import React from "react";
 
 const AccountsInfo = () => {
   return (
-    <div className="bg-gray-100 hidden sm:block md:w-[480px] sm:w-[380px] px-8 shrink-0">
-      <div className="mt-12">
-        <div className="flex flex-col p-4 items-start space-y-6">
+    <div className="bg-gray-100 hidden sm:block md:w-[480px] sm:w-[380px] shrink-0 overflow-hidden">
+      <div className="mt-12 flex flex-col space-y-8">
+        <div className="flex flex-col py-8 px-16 items-start space-y-6 z-50">
           <span
             className="font-sans text-3xl font-bold tracking-tighter"
           >
@@ -22,6 +22,12 @@ const AccountsInfo = () => {
           <p className="text-sm">LiveChat is a complete customer service platform that delights your customers and fuels your sales.</p>
           </div>
         </div>
+        <div className="relative h-[450px] bg-gradient-to-b from-gray-100 via-red-600 to-[#B91C1C] z-10">
+          {/* <div className="absolute border-2 top-[-50%] w-96 h-96 rounded-full bg-[#F3F4F6]"></div>   */}
+          <div className="absolute  border-b-2 bottom-[-360px] right-[4px] w-[700px] h-[700px] rounded-full bg-[#F3F4F6]"></div>  
+          <div className="absolute  border-b-2 bottom-[-100px] right-[180px] w-[350px] h-[350px] rounded-full  bg-gradient-to-b from-gray-100 to-[#B91C1C] z-20"></div>  
+        </div>
+        
       </div>
     </div>
   );

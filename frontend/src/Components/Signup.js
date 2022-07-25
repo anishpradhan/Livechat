@@ -139,7 +139,6 @@ const Signup = () => {
                     className="border-1 border-[#bcc6d0] w-96 h-12 px-3 rounded-md hover:border-black"
                     onChange={e => onChange(e)}
                     name="phone"
-                    value={phone}
                     maxLength="20"
                     required
                   />

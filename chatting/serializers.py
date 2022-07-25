@@ -12,12 +12,10 @@ class RoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
 
-        fields = ['id', 'name', 'support_group', 'details', 'started', 'last_sent_time', 'last_message_field', 'total_unread_messages']
+        fields = ['id', 'name', 'agents', 'details', 'started', 'last_sent_time', 'last_message_field', 'total_unread_messages']
 
 
 class MessageSerializer(serializers.ModelSerializer):
-
-    # sent_field = serializers.CharField(source='formatted_date', read_only=True)
 
     class Meta:
         model = Message

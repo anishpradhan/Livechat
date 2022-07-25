@@ -121,14 +121,14 @@ const ChatDetail = ({ username }) => {
                 clipRule="evenodd"
               />
             </svg>
-            <span className="font-medium text-sm">
+            <span className="font-medium text-sm pb-3">
               Kathmandu, Bagmati Province, Nepal
             </span>
           </div>
 
-          <div className="w-full h-36 bg-amber-300 mt-4 box-border pt-14">
+          {/* <div className="w-full h-36 bg-amber-300 mt-4 box-border pt-14">
             <span className="text-3xl">Map</span>
-          </div>
+          </div> */}
         </div>
         <div className="min-h-34 px-5 py-4 bg-white border-[1px] flex flex-col items-stretch space-y-3">
           <div className="text-left">

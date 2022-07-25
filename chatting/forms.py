@@ -8,7 +8,7 @@ class RoomForm(forms.ModelForm):
 
     class Meta:
         model = Room
-        fields = ('name', 'support_group', 'details')
+        fields = ('name', 'details')
 
 
 class MessageForm(forms.ModelForm):

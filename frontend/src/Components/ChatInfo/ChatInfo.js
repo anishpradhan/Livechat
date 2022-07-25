@@ -2,7 +2,7 @@ import React from 'react';
 
 const ChatInfo = ({time, info}) => {
     return (
-        <div className="flex flex-col justify-center py-3">
+        <div className="flex flex-col justify-center py-5">
             
             <div className="flex items-center justify-between">
             <hr className=' basis-2/5 h-2'/>
