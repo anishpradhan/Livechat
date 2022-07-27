@@ -28,6 +28,7 @@ const ChatWindow = () => {
 
   var isTyping = useSelector((state) => state.message.isTyping);
   var totalUnreadMessages = useSelector((state) => state.message.totalUnreadMessages);
+  var roomName = useSelector((state) => state.message.roomName);
 
   let { chatID } = useParams();
   const host = `${
@@ -44,7 +45,6 @@ const ChatWindow = () => {
   }, [chatID]);
 
   useLayoutEffect(() => {
-    console.log(inView);
     if(inView) {
       if (totalUnreadMessages !== "0") {
         dispatch(hasReadMessage(chatID, "agent"));
@@ -125,12 +125,11 @@ const ChatWindow = () => {
       );
     }
     else if (message.type === 'started_info'){
-      console.log(renderTimestamp(message.sent));
       return (<ChatStart key={message.id} timeStamp={renderTimestamp(message.sent)} />);
 
     }
     else if(message.type === 'chat_form'){
-      return (<NewRoomFormDetail key={message.id} name={"Anish"} detail={"DEtails in te dadf"} /> )
+      return (<NewRoomFormDetail key={message.id} name={roomName} detail={message.message} /> )
     }
     else {
       if (message.name === username) {

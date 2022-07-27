@@ -30,20 +30,22 @@ const initialState = {
 };
 
 const updateIsTyping = (state, action) => {
-  if(state.roomId === action.chatId){
-  return updateObject(state, {
-    isTyping: true
-  })}
-  else{
+  if (state.roomId === action.chatId) {
+    return updateObject(state, {
+      isTyping: true
+    })
+  }
+  else {
     return state;
   }
 }
 const updateFinishedTyping = (state, action) => {
-  if(state.roomId === action.chatId){
-  return updateObject(state, {
-    isTyping: false
-  })}
-  else{
+  if (state.roomId === action.chatId) {
+    return updateObject(state, {
+      isTyping: false
+    })
+  }
+  else {
     return state;
   }
 }
@@ -73,12 +75,12 @@ const joinChatRoom = (state, action) => {
   const chatRoom = state.pendingChatList.find(
     (room) => room.id === action.chatId
   );
-  const joinedChatRoom = {...chatRoom, agents:action.agentId}
+  const joinedChatRoom = { ...chatRoom, agents: action.agentId, total_unread_messages: 0 };
   const chatRoomIndex = state.pendingChatList.findIndex(
     (room) => room.id === action.chatId
   );
   state.pendingChatList.splice(chatRoomIndex, 1);
-  
+
   return updateObject(state, {
     pendingChatList: state.pendingChatList,
     allChatList: [joinedChatRoom, ...state.allChatList],
@@ -91,50 +93,100 @@ const addMessage = (state, action) => {
   const roomIndex = state.allChatList.findIndex(
     (room) => room.id === action.message.room
   );
+
+  console.log(roomIndex);
   const last_message_field = {
     message: action.message.message,
     sent_time: action.message.sent,
   };
-  if (state.roomId === action.message.room) {
-    return updateObject(state, {
-      messages: [action.message, ...state.messages],
-      totalUnreadMessages: state.totalUnreadMessages + 1,
-      allChatList: state.allChatList.map((obj, index) => {
-        if (index === roomIndex) {
-          if (action.message.agent === null) {
+  if (roomIndex !== -1) {
+    if (state.roomId === action.message.room) {
+      return updateObject(state, {
+        messages: [action.message, ...state.messages],
+        totalUnreadMessages: state.totalUnreadMessages + 1,
+        allChatList: state.allChatList.map((obj, index) => {
+          if (index === roomIndex) {
+            if (action.message.agent === null) {
+              return {
+                ...obj,
+                total_unread_messages: 0,
+                last_sent_time: last_message_field.sent_time,
+                last_message_field: last_message_field,
+              };
+            } else {
+              return {
+                ...obj,
+                last_sent_time: last_message_field.sent_time,
+                last_message_field: last_message_field,
+              };
+            }
+          }
+          return obj;
+        }),
+      });
+    } else {
+      return updateObject(state, {
+        messages: [...state.messages],
+        allChatList: state.allChatList.map((obj, index) => {
+          if (index === roomIndex) {
             return {
               ...obj,
-              total_unread_messages: 0,
-              last_sent_time: last_message_field.sent_time,
-              last_message_field: last_message_field,
-            };
-          } else {
-            return {
-              ...obj,
+              total_unread_messages: parseInt(obj.total_unread_messages) + 1,
               last_sent_time: last_message_field.sent_time,
               last_message_field: last_message_field,
             };
           }
-        }
-        return obj;
-      }),
-    });
-  } else {
-    return updateObject(state, {
-      messages: [...state.messages],
-      allChatList: state.allChatList.map((obj, index) => {
-        if (index === roomIndex) {
-          return {
-            ...obj,
-            total_unread_messages: parseInt(obj.total_unread_messages) + 1,
-            last_sent_time: last_message_field.sent_time,
-            last_message_field: last_message_field,
-          };
-        }
-        return obj;
-      }),
-    });
+          return obj;
+        }),
+      });
+    }
   }
+  else {
+    const roomIndex = state.pendingChatList.findIndex(
+      (room) => room.id === action.message.room)
+    if (state.roomId === action.message.room) {
+      return updateObject(state, {
+        messages: [action.message, ...state.messages],
+        totalUnreadMessages: state.totalUnreadMessages + 1,
+        pendingChatList: state.pendingChatList.map((obj, index) => {
+          if (index === roomIndex) {
+            if (action.message.agent === null) {
+              return {
+                ...obj,
+                total_unread_messages: 0,
+                last_sent_time: last_message_field.sent_time,
+                last_message_field: last_message_field,
+              };
+            } else {
+              return {
+                ...obj,
+                last_sent_time: last_message_field.sent_time,
+                last_message_field: last_message_field,
+              };
+            }
+          }
+          return obj;
+        }),
+      });
+    } else {
+      return updateObject(state, {
+        messages: [...state.messages],
+        pendingChatList: state.pendingChatList.map((obj, index) => {
+          if (index === roomIndex) {
+            return {
+              ...obj,
+              total_unread_messages: parseInt(obj.total_unread_messages) + 1,
+              last_sent_time: last_message_field.sent_time,
+              last_message_field: last_message_field,
+            };
+          }
+          return obj;
+        }),
+      });
+    }
+
+  }
+
 };
 
 const updateLastMsgReadStatus = (state, action) => {
