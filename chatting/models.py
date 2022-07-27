@@ -73,7 +73,7 @@ class Room(models.Model):
         if updateChatList:
             super(Room, self).save(*args, **kwargs)
             chatStartMsg = Message.objects.create(room=self, message=f'Chat Started', type='started_info')
-            preChatFormMsg = Message.objects.create(room=self, name=self.name,  message=f'Pre-chat form', type='chat_form')
+            preChatFormMsg = Message.objects.create(room=self, name=self.name,  message=self.details, type='chat_form')
             greetingMsg = Message.objects.create(room=self, message=f'Hello, How may I help you?', name='greetingMsg' )
             chatStartMsg.save()
             preChatFormMsg.save()

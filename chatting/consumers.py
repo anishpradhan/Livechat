@@ -416,7 +416,6 @@ class ChatConsumer(WebsocketConsumer):
             'by': data['by'],
             'chatId': data['chatId']
         }
-        print("FINISHED TYPING")
         if self.agent_assigned_group_name:
             return self.send_chat_message(content, agent_assigned_group_name=self.agent_assigned_group_name)
         else:

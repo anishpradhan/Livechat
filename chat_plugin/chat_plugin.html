@@ -2,44 +2,44 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8"/>
+    <meta charset="UTF-8" />
     <title>Index Page</title>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
-            crossorigin="anonymous"></script>
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
-          integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
 
 </head>
 
 <body>
-<!--Room Creation Form-->
-<div class="container" id="start_chat">
-    <div class="w-50  p-4 border-2 border-light rounded-3 mx-auto my-5 shadow bg-body rounded">
-        <h3 class="text-center">Room Form</h3>
-        <form id="roomForm" autocomplete="off">
-            <div class="mb-3">
-                <label for="name" class="form-label">Name:</label>
-                <input type="text" class="form-control" name="name" id="name" required/>
-            </div>
+    <!--Room Creation Form-->
+    <div class="container" id="start_chat">
+        <div class="w-50  p-4 border-2 border-light rounded-3 mx-auto my-5 shadow bg-body rounded">
+            <h3 class="text-center">Room Form</h3>
+            <form id="roomForm" autocomplete="off">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name:</label>
+                    <input type="text" class="form-control" name="name" id="name" required />
+                </div>
 
-            <div class="mb-3">
-                <label for="question" class="form-label">Question:</label>
-                <textarea class="form-control" name="question" id="question" cols="30" rows="10" required></textarea>
-            </div>
+                <div class="mb-3">
+                    <label for="question" class="form-label">Question:</label>
+                    <textarea class="form-control" name="question" id="question" cols="30" rows="10"
+                        required></textarea>
+                </div>
 
-            <input type="submit" class="btn btn-primary mb-3" id="start" value="Start Chat"/>
-        </form>
+                <input type="submit" class="btn btn-primary mb-3" id="start" value="Start Chat" />
+            </form>
+        </div>
     </div>
-</div>
 
-<!--Chat index page which is initially hidden-->
-<div class="container-fluid" id="chat_page">
-    <div
-            class="
+    <!--Chat index page which is initially hidden-->
+    <div class="container-fluid" id="chat_page">
+        <div class="
             chat_page
             w-50
             p-3
@@ -49,455 +49,441 @@
             shadow
             bg-body
             rounded
-          "
-    >
-        <div
-                class="
+          ">
+            <div class="
               d-block
               position-relative
               m-0
               h4
               p-2
               text-center
-            "
-        >
-            Chat: <span id="room_name"></span>
-        </div>
+            ">
+                Chat: <span id="room_name"></span>
+            </div>
 
-        <div class="chat">
+            <div class="chat">
 
-            <div class="d-flex flex-column justify-content-end border border-3 w-75 overflow-auto mb-3 p-2"
-                 id="message_log"
-                 style="height: 400px;">
+                <div class="d-flex flex-column justify-content-end border border-3 w-75 overflow-auto mb-3 p-2"
+                    id="message_log" style="height: 400px;">
+
+                </div>
+            </div>
+            <div class="attachments" id="attachments">
 
             </div>
-        </div>
-        <div class="attachments" id="attachments">
+            <input class="form-control w-75 mb-2" type="text" id="message" placeholder="Type your message..." />
+            <div class="input-group mb-3">
+                <label class="input-group-text pe-auto" for="fileUpload" style="cursor: pointer"><i
+                        class="fas fa-paperclip"></i></label>
+                <input type="file" name="file" class="form-control invisible" id="fileUpload">
 
-        </div>
-        <input
-                class="form-control w-75 mb-2"
-                type="text"
-                id="message"
-                placeholder="Type your message..."
-        />
-        <div class="input-group mb-3">
-            <label class="input-group-text pe-auto" for="fileUpload" style="cursor: pointer"><i
-                    class="fas fa-paperclip"></i></label>
-            <input type="file" name="file" class="form-control invisible" id="fileUpload">
-
-        </div>
-        <div class="button">
-            <button
-                    class="btn btn-primary"
-                    type="submit"
-                    id="send"
-                    style="width: 70px"
-            >
-                Send
-            </button>
-            <button class="btn btn-danger" id="endChat" style="width: 100px">
-                End Chat
-            </button>
+            </div>
+            <div class="button">
+                <button class="btn btn-primary" type="submit" id="send" style="width: 70px">
+                    Send
+                </button>
+                <button class="btn btn-danger" id="endChat" style="width: 100px">
+                    End Chat
+                </button>
+            </div>
         </div>
     </div>
-</div>
-</div>
+    </div>
 
-<script>
+    <script>
 
-    var tenant_uuid;
+        var tenant_uuid;
 
-    console.log(document.cookie);
+        console.log(document.cookie);
 
 
-    $(document).ready(function () {
-        /**
-         Perform two ajax calls, first to get the tenant_uuid of the schema_name provided, and after receiving the tenant_uuid,
-         make another request to get the support groups that are in that specific tenant.
-         **/
+        $(document).ready(function () {
+            /**
+             Perform two ajax calls, first to get the tenant_uuid of the schema_name provided, and after receiving the tenant_uuid,
+             make another request to get the support groups that are in that specific tenant.
+             **/
 
-        $.ajax({
-            type: "GET",
-            data: {
-                'schema_name': 'Anish',
-            },
-            async: false,
-            url: "http://localhost:8000/tenants/register/api/get_tenant_uuid",
-            success: function (data) {
-                console.log(data['tenant_name']);
-                console.log(data['tenant_uuid']);
-                tenant_uuid = data['tenant_uuid'];
-                // $.ajax({
-                //     type: "GET",
-                //     url: "http://localhost:8000/ajax/get_support_groups/",
-                //     crossDomain: true,
-                //     headers: {
-                //         'X-DTS-SCHEMA': tenant_uuid,
-                //     },
-                //     success: function (data) {
-                //
-                //         for (i = 0; i < data["support_groups"].length; i++) {
-                //             $("#support_group").append(
-                //                 "<option value=" +
-                //                 data["support_groups"][i] +
-                //                 ">" +
-                //                 data["support_groups"][i] +
-                //                 "</option>"
-                //             );
-                //             console.log(data["support_groups"][i]);
-                //         }
-                //     },
-                // });
-            },
-        });
-
-        $("#chat_page").hide(); //hides the initial empty chat page
-
-        /**
-         closes the bootstrap toast when close button is clicked.
-         **/
-        $(document).on('click', '#toast_close', function () {
-            $('#attachments').empty();
-            $('#fileUpload').val('');
-        });
-
-        /**
-         After filling up the form, the user submits the room creation form and the following things happen.
-         1) makes an ajax post request with tenant_uuid as header which will create the intended room in that particular
-         tenant with all the information provided in the form.
-
-         2) Receives following data:
-         a) room id of the room that was created,
-         b) room name,
-         c) support group of that room
-
-         3) establishes a websocket connection to the backend with the url which contains room_id as parameter which was just received
-         **/
-
-        $("#roomForm").submit(function (e) {
-            e.preventDefault();
-            var form = $(this);
-            console.log(form.serialize());
-            url = "http://localhost:8000/api/create_room/";
             $.ajax({
-                type: "POST",
-                url: url,
-                headers: {
-                    'X-DTS-SCHEMA': tenant_uuid
+                type: "GET",
+                data: {
+                    'schema_name': 'Anish',
                 },
-                data: form.serialize(),
+                async: false,
+                url: "http://localhost:8000/tenants/register/api/get_tenant_uuid",
                 success: function (data) {
-                    $("#start_chat").hide();
-                    $("#chat_page").show();
-                    var room_id = data['chat_id'];
-                    var room_name = data['chat_name'];
-                    // var support_group = data['support_group'];
-                    websocket(room_id, room_name); // call websocket function to establish websocket connection
-                    console.log(data);
+                    console.log(data['tenant_name']);
+                    console.log(data['tenant_uuid']);
+                    tenant_uuid = data['tenant_uuid'];
+                    // $.ajax({
+                    //     type: "GET",
+                    //     url: "http://localhost:8000/ajax/get_support_groups/",
+                    //     crossDomain: true,
+                    //     headers: {
+                    //         'X-DTS-SCHEMA': tenant_uuid,
+                    //     },
+                    //     success: function (data) {
+                    //
+                    //         for (i = 0; i < data["support_groups"].length; i++) {
+                    //             $("#support_group").append(
+                    //                 "<option value=" +
+                    //                 data["support_groups"][i] +
+                    //                 ">" +
+                    //                 data["support_groups"][i] +
+                    //                 "</option>"
+                    //             );
+                    //             console.log(data["support_groups"][i]);
+                    //         }
+                    //     },
+                    // });
                 },
             });
-        })
 
-        // establishing a websocket connection
-        function websocket(room_id, room_name, support_group) {
-            // WEBSOCKET
-            // var room_id = room_id;
-            // var ws_or_wss = window.location.protocol == "https:" ? "wss://" : "ws://";
-            // websocket_url = ws_or_wss + window.location.host
-            //     + '/ws/livechat/chatrooms/' + room_id + '/';
+            $("#chat_page").hide(); //hides the initial empty chat page
 
-            $('#room_name').text(room_name);
+            /**
+             closes the bootstrap toast when close button is clicked.
+             **/
+            $(document).on('click', '#toast_close', function () {
+                $('#attachments').empty();
+                $('#fileUpload').val('');
+            });
+
+            /**
+             After filling up the form, the user submits the room creation form and the following things happen.
+             1) makes an ajax post request with tenant_uuid as header which will create the intended room in that particular
+             tenant with all the information provided in the form.
+    
+             2) Receives following data:
+             a) room id of the room that was created,
+             b) room name,
+             c) support group of that room
+    
+             3) establishes a websocket connection to the backend with the url which contains room_id as parameter which was just received
+             **/
+
+            $("#roomForm").submit(function (e) {
+                e.preventDefault();
+                var form = $(this);
+                console.log(form.serialize());
+                url = "http://localhost:8000/api/create_room/";
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    headers: {
+                        'X-DTS-SCHEMA': tenant_uuid
+                    },
+                    data: form.serialize(),
+                    success: function (data) {
+                        $("#start_chat").hide();
+                        $("#chat_page").show();
+                        var room_id = data['chat_id'];
+                        var room_name = data['chat_name'];
+                        // var support_group = data['support_group'];
+                        websocket(room_id, room_name); // call websocket function to establish websocket connection
+                        console.log(data);
+                    },
+                });
+            })
+
+            // establishing a websocket connection
+            function websocket(room_id, room_name, support_group) {
+                // WEBSOCKET
+                // var room_id = room_id;
+                // var ws_or_wss = window.location.protocol == "https:" ? "wss://" : "ws://";
+                // websocket_url = ws_or_wss + window.location.host
+                //     + '/ws/livechat/chatrooms/' + room_id + '/';
+
+                $('#room_name').text(room_name);
 
 
-            websocket_url = 'ws://localhost:8000/ws/livechat/chatrooms/' + room_id + '/';
+                websocket_url = 'ws://localhost:8000/ws/livechat/chatrooms/' + room_id + '/';
 
-            // Initialize websocket with the url
-            var chatSocket = new WebSocket(
-                websocket_url
-            );
+                // Initialize websocket with the url
+                var chatSocket = new WebSocket(
+                    websocket_url
+                );
 
-            //  executes when websocket connection is open
-            chatSocket.onopen = function (e) {
-                console.log('Websocket connected.');
-                console.log(websocket_url);
-            }
-
-            // executes when websocket connection is closed
-            chatSocket.onclose = function () {
-                console.log('WebSocket disconnected.');
-            }
-
-            // executed when any type of message is received in websocket
-            chatSocket.onmessage = function (e) {
-                var data = JSON.parse(e.data);
-
-                /**
-                 If new message received in the websocket, append the message on the chat log.
-                 Append on left if sender is other user and append on right if sender is the user himself.,
-                 **/
-                if (data['command'] === "new_message") {
-                    var author = data['message']['name'];
-                    var splitted = author.split(" ");
-                    const dn = [];
-                    for (i = 0; i < splitted.length; i++) {
-                        dn[i] = splitted[i][0];
-                    }
-                    var display_name = dn.slice(0, 3).join("");
-
-                    if (data['message']['name'] === room_name) {
-
-                        $('#message_log').append(
-                            '<div class="p-auto w-100 m1-2 mb-3 d-flex flex-row-reverse"><div class="rounded-circle bg-primary text-center text-white p-2" style="width: 40px; height: 40px;">' + display_name + '</div>' +
-                            '<div class="px-3 py-2 d-inline-block mw-75 me-2 h-100 border rounded-pill text-white" style="background-color: #7646FE;">' + data["message"]["message"] + '</div></div>'
-                        );
-                        $('#message_log').scrollTop($('#message_log').prop('scrollHeight'));
-                    } else {
-                        $('#message_log').append(
-                            '<div class="p-auto w-100 mb-3 d-flex flex-row"><div class="rounded-circle bg-secondary text-center text-white p-2" style="width: 40px; height: 40px;">' + display_name + '</div>' +
-                            '<div class="px-3 py-2 d-inline-block bg-secondary mw-75 ms-2 h-100 border rounded-pill text-white" style="background-color: #7646FE;">' + data["message"]["message"] + '</div></div>'
-                        )
-                    }
+                //  executes when websocket connection is open
+                chatSocket.onopen = function (e) {
+                    console.log('Websocket connected.');
+                    console.log(websocket_url);
                 }
 
-                /**
-                 # UNIMPLEMENTED
-
-                 When anyone user joins the chat, display appropriate message.
-                 **/
-                if (data['command'] === "joined_chat") {
-                    $('.message_ul').append(
-                        "<li style='background: green'> " + data['message'] + "</li>"
-                    );
+                // executes when websocket connection is closed
+                chatSocket.onclose = function () {
+                    console.log('WebSocket disconnected.');
                 }
 
-                /**
-                 When anyone ends the chat, the chatting section is disabled so that no one can send the message again.
-                 **/
-                if (data['command'] === "end_chat") {
-                    $('.message_ul').append(
-                        "<li style='background: red'> " + data['message'] + "</li>"         // #UNIMPLEMENTED
-                    );
-                    $('#message').attr('disabled', true);
-                    $('#endChat').attr('disabled', true);
-                    // $('#message').attr('disabled', true);
-                }
+                // executed when any type of message is received in websocket
+                chatSocket.onmessage = function (e) {
+                    var data = JSON.parse(e.data);
 
-                /**
-                 if file uploaded, then display the file message in the chat log.
-                 **/
-                if (data['command'] === "uploaded_file") {
-                    if (data['message']['uploaded_by'] === room_name) {
-                        $('#message_log').append(
-                            '<div class="p-auto w-100 m1-2 mb-2 d-flex flex-row-reverse"><div class="rounded-circle float-end bg-primary text-center text-white p-2" style="width: 40px; height: 40px;">' + display_name + '</div>' +
-                            '<div class="p-2 mw-75 me-2 float-end h-100 border rounded-3 text-white" style="background-color: #7646FE;"><a id="downloadFile" style="cursor: pointer"><i class="far fa-file fa-3x"></i><span class="mx-2">' + data["message"]["file_name"] + '</span></a></div></div>'
-                        );
-                    } else {
-                        $('#message_log').append(
-                            '<div class="p-auto w-100 m1-2 mb-2 d-flex flex-row"><div class="rounded-circle float-end bg-primary text-center text-white p-2" style="width: 40px; height: 40px;">' + display_name + '</div>' +
-                            '<div class="p-2 mw-75 me-2 float-end h-100 border rounded-3 text-white" style="background-color: #7646FE;"><a id="downloadFile" style="cursor: pointer"><i class="far fa-file fa-3x"></i><span class="mx-2">' + data["message"]["file_name"] + '</span></a></div></div>'
-                        )
+                    /**
+                     If new message received in the websocket, append the message on the chat log.
+                     Append on left if sender is other user and append on right if sender is the user himself.,
+                     **/
+                    if (data['command'] === "new_message") {
+                        var author = data['message']['name'];
+                        var splitted = author.split(" ");
+                        const dn = [];
+                        for (i = 0; i < splitted.length; i++) {
+                            dn[i] = splitted[i][0];
+                        }
+                        var display_name = dn.slice(0, 3).join("");
+
+                        if (data['message']['name'] === room_name) {
+
+                            $('#message_log').append(
+                                '<div class="p-auto w-100 m1-2 mb-3 d-flex flex-row-reverse"><div class="rounded-circle bg-primary text-center text-white p-2" style="width: 40px; height: 40px;">' + display_name + '</div>' +
+                                '<div class="px-3 py-2 d-inline-block mw-75 me-2 h-100 border rounded-pill text-white" style="background-color: #7646FE;">' + data["message"]["message"] + '</div></div>'
+                            );
+                            $('#message_log').scrollTop($('#message_log').prop('scrollHeight'));
+                        } else {
+                            $('#message_log').append(
+                                '<div class="p-auto w-100 mb-3 d-flex flex-row"><div class="rounded-circle bg-secondary text-center text-white p-2" style="width: 40px; height: 40px;">' + display_name + '</div>' +
+                                '<div class="px-3 py-2 d-inline-block bg-secondary mw-75 ms-2 h-100 border rounded-pill text-white" style="background-color: #7646FE;">' + data["message"]["message"] + '</div></div>'
+                            )
+                        }
                     }
 
                     /**
-                     * function that downloads the file when user clicks on the file message on the chat log.
-                     */
-                    $('#downloadFile').click(function () {
-                        $.ajax({
-                            type: 'GET',
-                            url: 'http://localhost:8000/api/download_file/',
-                            data: {
-                                'file_id': data['message']['file_id']
-                            },
-                            xhrFields: {
-                                responseType: 'blob' // to avoid binary data being mangled on charset conversion
-                            },
-                            success: function (blob, status, xhr) {
-                                var filename = "";
-                                var disposition = xhr.getResponseHeader('Content-Disposition');
-                                if (disposition && disposition.indexOf('attachment') !== -1) {
-                                    var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-                                    var matches = filenameRegex.exec(disposition);
-                                    if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
-                                    if (typeof window.navigator.msSaveBlob !== 'undefined') {
-                                        // IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
-                                        window.navigator.msSaveBlob(blob, filename);
-                                    } else {
-                                        var URL = window.URL || window.webkitURL;
-                                        var downloadUrl = URL.createObjectURL(blob);
+                     # UNIMPLEMENTED
+    
+                     When anyone user joins the chat, display appropriate message.
+                     **/
+                    if (data['command'] === "joined_chat") {
+                        $('.message_ul').append(
+                            "<li style='background: green'> " + data['message'] + "</li>"
+                        );
+                    }
 
-                                        if (filename) {
-                                            // use HTML5 a[download] attribute to specify filename
-                                            var a = document.createElement("a");
-                                            // safari doesn't support this yet
-                                            if (typeof a.download === 'undefined') {
-                                                window.location.href = downloadUrl;
-                                            } else {
-                                                a.href = downloadUrl;
-                                                a.download = filename;
-                                                document.body.appendChild(a);
-                                                a.click();
-                                            }
+                    /**
+                     When anyone ends the chat, the chatting section is disabled so that no one can send the message again.
+                     **/
+                    if (data['command'] === "end_chat") {
+                        $('.message_ul').append(
+                            "<li style='background: red'> " + data['message'] + "</li>"         // #UNIMPLEMENTED
+                        );
+                        $('#message').attr('disabled', true);
+                        $('#endChat').attr('disabled', true);
+                        // $('#message').attr('disabled', true);
+                    }
+
+                    /**
+                     if file uploaded, then display the file message in the chat log.
+                     **/
+                    if (data['command'] === "uploaded_file") {
+                        if (data['message']['uploaded_by'] === room_name) {
+                            $('#message_log').append(
+                                '<div class="p-auto w-100 m1-2 mb-2 d-flex flex-row-reverse"><div class="rounded-circle float-end bg-primary text-center text-white p-2" style="width: 40px; height: 40px;">' + display_name + '</div>' +
+                                '<div class="p-2 mw-75 me-2 float-end h-100 border rounded-3 text-white" style="background-color: #7646FE;"><a id="downloadFile" style="cursor: pointer"><i class="far fa-file fa-3x"></i><span class="mx-2">' + data["message"]["file_name"] + '</span></a></div></div>'
+                            );
+                        } else {
+                            $('#message_log').append(
+                                '<div class="p-auto w-100 m1-2 mb-2 d-flex flex-row"><div class="rounded-circle float-end bg-primary text-center text-white p-2" style="width: 40px; height: 40px;">' + display_name + '</div>' +
+                                '<div class="p-2 mw-75 me-2 float-end h-100 border rounded-3 text-white" style="background-color: #7646FE;"><a id="downloadFile" style="cursor: pointer"><i class="far fa-file fa-3x"></i><span class="mx-2">' + data["message"]["file_name"] + '</span></a></div></div>'
+                            )
+                        }
+
+                        /**
+                         * function that downloads the file when user clicks on the file message on the chat log.
+                         */
+                        $('#downloadFile').click(function () {
+                            $.ajax({
+                                type: 'GET',
+                                url: 'http://localhost:8000/api/download_file/',
+                                data: {
+                                    'file_id': data['message']['file_id']
+                                },
+                                xhrFields: {
+                                    responseType: 'blob' // to avoid binary data being mangled on charset conversion
+                                },
+                                success: function (blob, status, xhr) {
+                                    var filename = "";
+                                    var disposition = xhr.getResponseHeader('Content-Disposition');
+                                    if (disposition && disposition.indexOf('attachment') !== -1) {
+                                        var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                                        var matches = filenameRegex.exec(disposition);
+                                        if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
+                                        if (typeof window.navigator.msSaveBlob !== 'undefined') {
+                                            // IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
+                                            window.navigator.msSaveBlob(blob, filename);
                                         } else {
-                                            window.location.href = downloadUrl;
-                                        }
+                                            var URL = window.URL || window.webkitURL;
+                                            var downloadUrl = URL.createObjectURL(blob);
 
-                                        setTimeout(function () {
-                                            URL.revokeObjectURL(downloadUrl);
-                                        }, 100); // cleanup
+                                            if (filename) {
+                                                // use HTML5 a[download] attribute to specify filename
+                                                var a = document.createElement("a");
+                                                // safari doesn't support this yet
+                                                if (typeof a.download === 'undefined') {
+                                                    window.location.href = downloadUrl;
+                                                } else {
+                                                    a.href = downloadUrl;
+                                                    a.download = filename;
+                                                    document.body.appendChild(a);
+                                                    a.click();
+                                                }
+                                            } else {
+                                                window.location.href = downloadUrl;
+                                            }
+
+                                            setTimeout(function () {
+                                                URL.revokeObjectURL(downloadUrl);
+                                            }, 100); // cleanup
+                                        }
                                     }
                                 }
-                            }
 
-                        });
-                    })
+                            });
+                        })
 
+                    }
                 }
-            }
 
 
-            // END WEBSOCKET
-            /**
-             * Display file as a toast below the message text box when user selects any file.
-             */
-            $('input[type="file"]').change(function (e) {
-                e.preventDefault();
-                var fileName = e.target.files[0].name;
-                $('#attachments').append(
-                    '<div class="toast align-items-center mb-2 w-25 overflow-hidden" data-bs-autohide="false">' +
-                    '<div class="d-flex">' +
-                    '<div class="toast-body"> <p class="mb-0"><i class="far fa-file fa-3x"></i></p>' +
-                    fileName + '</div>' +
-                    '<button type="button" class="btn-close me-2 m-auto" id="toast_close" aria-label="Close"></button>' +
-                    '</div></div>'
-                );
-                $(".toast").toast("show");
+                // END WEBSOCKET
+                /**
+                 * Display file as a toast below the message text box when user selects any file.
+                 */
+                $('input[type="file"]').change(function (e) {
+                    e.preventDefault();
+                    var fileName = e.target.files[0].name;
+                    $('#attachments').append(
+                        '<div class="toast align-items-center mb-2 w-25 overflow-hidden" data-bs-autohide="false">' +
+                        '<div class="d-flex">' +
+                        '<div class="toast-body"> <p class="mb-0"><i class="far fa-file fa-3x"></i></p>' +
+                        fileName + '</div>' +
+                        '<button type="button" class="btn-close me-2 m-auto" id="toast_close" aria-label="Close"></button>' +
+                        '</div></div>'
+                    );
+                    $(".toast").toast("show");
 
-            });
+                });
 
 
-            var div = $('.log');
+                var div = $('.log');
 
-            // send the message if enter is pressed
-            $('#message').keyup(function (e) {
-                if (e.which === 13) {
-                    $('#send').trigger('click');
-                }
-            })
+                // send the message if enter is pressed
+                $('#message').keyup(function (e) {
+                    if (e.which === 13) {
+                        $('#send').trigger('click');
+                    }
+                })
 
-            function hasRead(roomID, sender) {
-                chatSocket.send(JSON.stringify({
-                    'command': "set_message_read",
-                    'chatId': roomID,
-                    'sender': sender
-                }))
-            }
-
-            /**
-             * executed when message is sent by user
-             */
-            $('#message_log').click(function () {
-                hasRead(room_id, 'not_agent');
-            });
-
-            $('#send').click(function () {
-
-                // Send message to the websocket
-                if ($.trim($('#message').val()) !== '') {
-                    // if (keyTimer) {
-                    clearTimeout(keyTimer);
-                    // };
-                    var message = $("#message").val();
+                function hasRead(roomID, sender) {
                     chatSocket.send(JSON.stringify({
-                        'command': "new_message",
-                        'from': room_name,
-                        'message': message,
-                        'chatId': room_id,
+                        'command': "set_message_read",
+                        'chatId': roomID,
+                        'sender': sender
                     }))
-                    chatSocket.send(JSON.stringify({
-                        'command': 'finished_typing',
-                        'by': room_name,
-                        'chatId': room_id
-                    }));
-
-                    $('#message').val('');
-
                 }
 
+                /**
+                 * executed when message is sent by user
+                 */
+                $('#message_log').click(function () {
+                    hasRead(room_id, 'not_agent');
+                });
 
-                /** send is_typing status when the user is typing. Only implemented for admin side. Needs improvement **/
+                $('#send').click(function () {
 
-                var textarea = $('#message');
-                var keyTimer;
-                textarea.keyup(function (e) {
-                    if (e.which !== 13) {
-                        chatSocket.send(JSON.stringify({
-                            'command': 'is_typing',
-                            'by': room_name,
-                            'chatId': room_id
-                        }))
-                    }
-
-                    if (keyTimer) {
+                    // Send message to the websocket
+                    if ($.trim($('#message').val()) !== '') {
+                        // if (keyTimer) {
                         clearTimeout(keyTimer);
-                    }
-                    keyTimer = setTimeout(function () {
+                        // };
+                        var message = $("#message").val();
+                        chatSocket.send(JSON.stringify({
+                            'command': "new_message",
+                            'from': room_name,
+                            'message': message,
+                            'chatId': room_id,
+                        }))
                         chatSocket.send(JSON.stringify({
                             'command': 'finished_typing',
                             'by': room_name,
                             'chatId': room_id
                         }));
-                        console.log("FINISHED TYPING");
-                    }, 1500);
+
+                        $('#message').val('');
+
+                    }
+
+
+                    /** send is_typing status when the user is typing. Only implemented for admin side. Needs improvement **/
+
+                    var textarea = $('#message');
+                    var keyTimer;
+                    textarea.keyup(function (e) {
+                        if (e.which !== 13) {
+                            chatSocket.send(JSON.stringify({
+                                'command': 'is_typing',
+                                'by': room_name,
+                                'chatId': room_id
+                            }))
+                        }
+
+                        if (keyTimer) {
+                            clearTimeout(keyTimer);
+                        }
+                        keyTimer = setTimeout(function () {
+                            chatSocket.send(JSON.stringify({
+                                'command': 'finished_typing',
+                                'by': room_name,
+                                'chatId': room_id
+                            }));
+                            console.log("FINISHED TYPING");
+                        }, 1500);
+                    });
+
+                    /** File Upload function that uploads the file with ajax post request to the backend **/
+                    var file_field = $('#fileUpload').prop('files')[0]
+                    if (file_field) {
+                        var formData = new FormData();
+                        formData.append('file', file_field);
+                        formData.append('uploaded_by', room_name);
+
+                        $.ajax({
+                            type: 'POST',
+                            url: 'http://localhost:8000/chat/api/upload_file/',
+                            contentType: false,
+                            cache: false,
+                            processData: false,
+                            data: formData,
+                            success: function (data) {
+                                chatSocket.send(JSON.stringify({
+                                    'command': 'upload_file',
+                                    'uploaded_by': data['uploaded_by'],
+                                    'file_id': data['id'],
+                                    'chatId': room_id,
+                                }))
+                                $('#fileUpload').val("");
+                                e = null;
+                                $('#attachments').empty();
+                            }
+                        })
+
+
+                    }
+                })
+
+                /**
+                 * executed when end chat button is clicked
+                 */
+                $('#endChat').click(function () {
+                    chatSocket.send(JSON.stringify({
+                        'command': 'end_chat',
+                        'left': room_name,
+                        'chatId': room_id,
+                    }))
+                    chatSocket.close();
                 });
 
-                /** File Upload function that uploads the file with ajax post request to the backend **/
-                var file_field = $('#fileUpload').prop('files')[0]
-                if (file_field) {
-                    var formData = new FormData();
-                    formData.append('file', file_field);
-                    formData.append('uploaded_by', room_name);
+            }
+        });
 
-                    $.ajax({
-                        type: 'POST',
-                        url: 'http://localhost:8000/chat/api/upload_file/',
-                        contentType: false,
-                        cache: false,
-                        processData: false,
-                        data: formData,
-                        success: function (data) {
-                            chatSocket.send(JSON.stringify({
-                                'command': 'upload_file',
-                                'uploaded_by': data['uploaded_by'],
-                                'file_id': data['id'],
-                                'chatId': room_id,
-                            }))
-                            $('#fileUpload').val("");
-                            e = null;
-                            $('#attachments').empty();
-                        }
-                    })
-
-
-                }
-            })
-
-            /**
-             * executed when end chat button is clicked
-             */
-            $('#endChat').click(function () {
-                chatSocket.send(JSON.stringify({
-                    'command': 'end_chat',
-                    'left': room_name,
-                    'chatId': room_id,
-                }))
-                chatSocket.close();
-            });
-
-        }
-    });
-
-</script>
+    </script>
 </body>
 
 </html>

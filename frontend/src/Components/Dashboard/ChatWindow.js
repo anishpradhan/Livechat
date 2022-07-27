@@ -44,6 +44,7 @@ const ChatWindow = () => {
   }, [chatID]);
 
   useLayoutEffect(() => {
+    console.log(inView);
     if(inView) {
       if (totalUnreadMessages !== "0") {
         dispatch(hasReadMessage(chatID, "agent"));
