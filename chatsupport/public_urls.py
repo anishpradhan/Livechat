@@ -28,8 +28,8 @@ from account.serializers import CustomObtainPairView
 urlpatterns = [
                   path('admin/', admin.site.urls),
                   path('accounts/', include('account.urls')),
-                  path('', views.main_index),
-                  path('tenants/register/', include('tenants.urls', namespace='tenants')),
+                  path('chat/', views.main_index),
+                  path('tenants/', include('tenants.urls', namespace='tenants')),
                   path('auth/jwt/create/', CustomObtainPairView.as_view(), name='customtoken'),
                   path('auth/', include('djoser.urls')),
                   path('auth/', include('djoser.urls.jwt')),

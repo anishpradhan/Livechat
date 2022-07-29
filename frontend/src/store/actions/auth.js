@@ -23,7 +23,7 @@ export const checkAuthenticated = () => async(dispatch) => {
     const body = JSON.stringify({ token: localStorage.getItem("access") });
     try {  
       const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}/auth/jwt/verify/`,
+        `${process.env.REACT_APP_AUTH_URL}/jwt/verify/`,
         body,
         config,
       );
@@ -67,7 +67,7 @@ export const load_user = () => async(dispatch) => {
     };
 
     try{
-      const res = await axios.get(`${process.env.REACT_APP_API_URL}/auth/users/me/`, config);
+      const res = await axios.get(`${process.env.REACT_APP_AUTH_URL}/users/me/`, config);
       dispatch({
         type: USER_LOAD_SUCCESS,
         payload: res.data
@@ -95,7 +95,7 @@ export const login = (email, password) => async (dispatch) => {
 
     try {
       const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}/auth/jwt/create/`,
+        `${process.env.REACT_APP_AUTH_URL}/jwt/create/`,
         body,
         config
       );
@@ -134,7 +134,7 @@ export const signup = ( full_name,
 
     try {
       const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}/tenants/register/register_tenant/`,
+        `${process.env.REACT_APP_TENANT_URL}/register_tenant/`,
         body,
         config
       );

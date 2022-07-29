@@ -1,7 +1,7 @@
 version: "3.7"
 
 volumes:
-  postgres_data: { }
+  # postgres_data: { }
   storage_data: { }
 
 services:
@@ -10,7 +10,7 @@ services:
   postgres:
     image: postgres:13-alpine
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
+      - ./data/db:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
@@ -29,8 +29,8 @@ services:
       context: .
 
 #    Uncomment command for use in production development
-    command: >
-      sh -c "python manage.py migrate_schemas --shared"
+    # command: >
+    #   sh -c "python manage.py migrate_schemas --shared"
 
 #    used in local development with docker. Comment if using in production
 #    command: >
@@ -43,29 +43,44 @@ services:
       - postgres
       - redis
     env_file:
-      - .env.dev
+      - .env
     environment:
       - DB_HOST=postgres
       - DB_NAME=postgres
       - DB_USER=postgres
       - DB_PASS=admin
       - DB_PORT=5432
-    expose:
-      - 8000
+    # expose:
+    #   - 8000
+    restart: always
+    command: bash entrypoint.sh
     ports:
       - "8000:8000"
     links:
       - postgres
       - redis
 
+  nginx:
+    build:
+      context: .
+      dockerfile: ./nginx/Dockerfile
+    restart: always
+    volumes:
+      - storage_data:/staticfiles
+    ports:
+      - "80:80"
+    depends_on:
+      - chatsupport    
+
   channels:
     build: .
     command: daphne -b 0.0.0.0 -p 8001 chatsupport.asgi:channel_layers
     env_file:
-      - .env.dev
+      - .env
     volumes:
       - .:/chatsupport
     ports:
       - "8001:8001"
     links:
       - redis
+

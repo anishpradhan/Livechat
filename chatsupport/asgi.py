@@ -11,21 +11,22 @@ import os
 import django
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'chatsupport.settings')
+django.setup()
 
 """
 Uncomment for local development only in docker or else comment for production in heroku
 """
-# from channels.layers import get_channel_layer
-# channel_layers = get_channel_layer()
+from channels.layers import get_channel_layer
+channel_layers = get_channel_layer()
 """
 till here.
 """
 
-django.setup()
+
 
 from django.core.asgi import get_asgi_application
 from channels.auth import AuthMiddlewareStack
-from chatting.tokenauthmiddleware import TokenAuthMiddleware
+# from chatting.tokenauthmiddleware import TokenAuthMiddleware
 from channels.routing import ProtocolTypeRouter, URLRouter
 import chatting.routing as routing
 

@@ -109,14 +109,14 @@
                     'schema_name': 'Anish',
                 },
                 async: false,
-                url: "http://localhost:8000/tenants/register/api/get_tenant_uuid",
+                url: "http://localhost/tenants/api/get_tenant_uuid",
                 success: function (data) {
                     console.log(data['tenant_name']);
                     console.log(data['tenant_uuid']);
                     tenant_uuid = data['tenant_uuid'];
                     // $.ajax({
                     //     type: "GET",
-                    //     url: "http://localhost:8000/ajax/get_support_groups/",
+                    //     url: "http://localhost/ajax/get_support_groups/",
                     //     crossDomain: true,
                     //     headers: {
                     //         'X-DTS-SCHEMA': tenant_uuid,
@@ -165,7 +165,7 @@
                 e.preventDefault();
                 var form = $(this);
                 console.log(form.serialize());
-                url = "http://localhost:8000/api/create_room/";
+                url = "http://localhost/chat/api/create_room/";
                 $.ajax({
                     type: "POST",
                     url: url,
@@ -196,7 +196,7 @@
                 $('#room_name').text(room_name);
 
 
-                websocket_url = 'ws://localhost:8000/ws/livechat/chatrooms/' + room_id + '/';
+                websocket_url = 'ws://localhost/ws/livechat/chatrooms/' + room_id + '/';
 
                 // Initialize websocket with the url
                 var chatSocket = new WebSocket(
@@ -291,7 +291,7 @@
                         $('#downloadFile').click(function () {
                             $.ajax({
                                 type: 'GET',
-                                url: 'http://localhost:8000/api/download_file/',
+                                url: 'http://localhost/chat/api/download_file/',
                                 data: {
                                     'file_id': data['message']['file_id']
                                 },
@@ -446,7 +446,7 @@
 
                         $.ajax({
                             type: 'POST',
-                            url: 'http://localhost:8000/chat/api/upload_file/',
+                            url: 'http://localhost/chat/api/upload_file/',
                             contentType: false,
                             cache: false,
                             processData: false,

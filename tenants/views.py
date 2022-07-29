@@ -117,7 +117,7 @@ class RegisterTenantView(APIView):
             return Response({
                 'success' : 'Account successfully created!'
             })
-        except e :
+        except:
             return Response({
                 'error' : "Error in creating account"
             })

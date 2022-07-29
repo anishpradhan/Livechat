@@ -13,13 +13,13 @@ import os
 from pathlib import Path
 from corsheaders.defaults import default_headers
 from datetime import timedelta
-import dj_database_url
+# import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-import django_heroku
+# import django_heroku
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-STATIC_DIR = os.path.join(BASE_DIR, 'static/')
+# STATIC_DIR = os.path.join(BASE_DIR, 'static/')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -39,7 +39,7 @@ DEBUG = True
 """Use in Production Development"""
 # DEBUG = os.environ.get('DEBUG', default=True)
 
-ALLOWED_HOSTS = ['localhost', 'volgaichat.herokuapp.com', 'volgaisupport.heroku.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 # Application definition
 
@@ -74,7 +74,7 @@ TENANT_APPS = (
 )
 
 INSTALLED_APPS = list(SHARED_APPS) + \
-                 [app for app in TENANT_APPS if app not in SHARED_APPS]
+    [app for app in TENANT_APPS if app not in SHARED_APPS]
 
 TENANT_MODEL = 'tenants.Client'
 
@@ -121,29 +121,29 @@ ASGI_APPLICATION = 'chatsupport.asgi.application'
 
 '''DATABASE CONFIGURATION IN LOCAL DEVELOPMENT WITH SEPARATE POSTGRESQL DATABASE'''
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django_tenants.postgresql_backend',
-        'NAME': 'chat_support',
-        'USER': 'postgres',
-        'PASSWORD': 'admin',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
-}
-
-'''UNCOMMENT FOR DATABASE CONFIGURATION IN LOCAL DEVELOPMENT WITH DOCKER'''
-
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django_tenants.postgresql_backend',
-#         'NAME': os.environ.get('DB_NAME'),
-#         'USER': os.environ.get('DB_USER'),
-#         'PASSWORD': os.environ.get('DB_PASS'),
-#         'HOST': os.environ.get('DB_HOST'),
-#         'PORT': os.environ.get('DB_PORT'),
+#         'NAME': 'chat_support',
+#         'USER': 'postgres',
+#         'PASSWORD': 'admin',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
 #     }
 # }
+
+# '''UNCOMMENT FOR DATABASE CONFIGURATION IN LOCAL DEVELOPMENT WITH DOCKER'''
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django_tenants.postgresql_backend',
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASS'),
+        'HOST': os.environ.get('DB_HOST'),
+        'PORT': os.environ.get('DB_PORT'),
+    }
+}
 
 '''DATABASE CONFIGURATION FOR PRODUCTION IN HEROKU'''
 
@@ -176,11 +176,11 @@ EMAIL_USE_TLS = True
 
 CHANNEL_LAYERS = {
     'default': {
-        #         'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'BACKEND': 'channels.layers.InMemoryChannelLayer',
-        # 'CONFIG': {
-        #     "hosts": [('redis', 6379)]
-        # },
+        # 'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        # 'BACKEND': 'channels.layers.InMemoryChannelLayer',
+        'CONFIG': {
+            "hosts": [('redis', 6379)]
+        },
     },
 }
 
@@ -234,10 +234,8 @@ USE_TZ = None
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = '/static/'
-STATICFILES_DIRS = (STATIC_DIR,)
-
+STATIC_URL = '/staticfiles/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
