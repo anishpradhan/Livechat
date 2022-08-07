@@ -1,7 +1,7 @@
 version: "3.7"
 
 volumes:
-  # postgres_data: { }
+  postgres_data: { }
   storage_data: { }
 
 services:
@@ -10,7 +10,7 @@ services:
   postgres:
     image: postgres:13-alpine
     volumes:
-      - ./data/db:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
